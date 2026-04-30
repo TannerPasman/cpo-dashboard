@@ -59,15 +59,10 @@ def load_data(path):
 # ── File loader in sidebar ────────────────────────────────────────────────────
 with st.sidebar:
     st.title("⚙️ Settings")
-    uploaded = st.file_uploader("Upload your data file (.xlsx or .csv)", type=["xlsx", "csv"])
     st.markdown("---")
 
-if uploaded is None:
-    st.title("🦠 CPO Surveillance Dashboard")
-    st.info("Upload your Excel file using the sidebar to get started.")
-    st.stop()
-
-df = load_data(uploaded)
+# Load data automatically from file in the repo
+df = load_data("CPO_data_anonymous (1).csv")
 
 # ── Sidebar filters ───────────────────────────────────────────────────────────
 with st.sidebar:
