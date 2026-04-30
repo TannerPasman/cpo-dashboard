@@ -69,7 +69,7 @@ with st.sidebar:
     st.markdown("---")
 
 # Load data automatically from file in the repo
-df = load_data("cpo_data.csv")
+df = load_data("CPO_data_anonymous (1).csv")
 
 # ── Sidebar filters ───────────────────────────────────────────────────────────
 with st.sidebar:
