@@ -40,7 +40,14 @@ st.markdown("""
 # ── Load data ─────────────────────────────────────────────────────────────────
 @st.cache_data
 def load_data(path):
-    if hasattr(path, "name") and path.name.endswith(".csv"):
+    if hasattr(path, "name"):
+        # handling uploaded file object
+        if path.name.endswith(".csv"):
+            df = pd.read_csv(path)
+        else:
+            df = pd.read_excel(path)
+    elif str(path).endswith(".csv"):
+        # handling direct file path string
         df = pd.read_csv(path)
     else:
         df = pd.read_excel(path)
@@ -62,7 +69,7 @@ with st.sidebar:
     st.markdown("---")
 
 # Load data automatically from file in the repo
-df = load_data("CPO_data_anonymous (1).csv")
+df = load_data("cpo_data.csv")
 
 # ── Sidebar filters ───────────────────────────────────────────────────────────
 with st.sidebar:
