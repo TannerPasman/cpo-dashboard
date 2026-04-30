@@ -367,11 +367,18 @@ with tab3:
             st.markdown("##### Risk factor prevalence")
             risk_fields = ["wounds","tracheostomy","ventilator_dependent","indwelling_device",
                            "dialysis","surgery_past_12_months"]
-            risk_fields = [r for r in risk_fields if r in trend_df.columns]
-            risk_summary = {}
-            for r in risk_fields:
-                yes_count = trend_df[r].astype(str).str.lower().isin(["yes","true","1","y"]).sum()
-                risk_summary[r.replace("_"," ").title()] = yes_count
+           risk_fields = ["wounds","tracheostomy","ventilator_dependent","inwelling_device",
+               "dialysis","surgery_past_12_months"]
+risk_fields = [r for r in risk_fields if r in trend_df.columns]
+risk_summary = {}
+for r in risk_fields:
+    # Count anything that isn't explicitly No/None/missing as Yes
+    no_values = ["no", "none", "no wounds", "no inwelling devices", 
+                 "nan", "none", "", "—"]
+    yes_count = (~trend_df[r].astype(str).str.lower().str.strip()
+                 .isin(no_values) & 
+                 trend_df[r].notna()).sum()
+    risk_summary[r.replace("_"," ").title()] = yes_count
             risk_plot = pd.DataFrame(list(risk_summary.items()), columns=["Risk factor","Count"])
             risk_plot = risk_plot.sort_values("Count", ascending=True)
             fig = px.bar(risk_plot, x="Count", y="Risk factor", orientation="h",
